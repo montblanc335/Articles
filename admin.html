@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בינה פלוס - ניהול מאמרים</title>
+    <style>
+        :root {
+            --primary: #6700EB;
+            --secondary: #00EBCC;
+            --dark: #121212;
+            --light: #f4f4f8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 130px;
+            width: auto;
+        }
+
+        nav {
+            margin-right: 20px;
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: flex-start;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .admin-panel {
+            padding: 3rem 0;
+        }
+
+        .admin-panel h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .admin-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 2px rgba(0, 235, 204, 0.25);
+        }
+
+        textarea.form-control {
+            min-height: 300px;
+            resize: vertical;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            height: 200px;
+            margin-top: 1rem;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(90deg, #eb0067, #eb0033);
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .articles-list {
+            margin-top: 3rem;
+        }
+
+        .articles-list h2 {
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .article-item {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .article-item h3 {
+            margin: 0;
+            color: var(--light);
+        }
+
+        .article-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .article-actions button {
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .article-actions .edit {
+            background-color: var(--secondary);
+            color: var(--dark);
+        }
+
+        .article-actions .delete {
+            background-color: #eb0067;
+            color: white;
+        }
+
+        .success-message {
+            background-color: rgba(0, 235, 204, 0.1);
+            border: 1px solid var(--secondary);
+            padding: 1rem;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            display: none;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 3rem 0;
+            margin-top: 5rem;
+        }
+
+        .copyright {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            .logo {
+                margin-bottom: 10px;
+            }
+
+            nav {
+                margin-right: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 5px 0;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="img/תמונה1.png" alt="בינה פלוס לוגו" width="250">
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">דף הבית</a></li>
+                        <li><a href="index.html#articles">מאמרים</a></li>
+                        <li><a href="admin.html" class="active">ניהול מאמרים</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-panel">
+        <div class="container">
+            <h1>ניהול מאמרים</h1>
+
+            <div class="success-message" id="successMessage">
+                המאמר פורסם בהצלחה!
+            </div>
+
+            <div class="admin-card">
+                <form id="articleForm">
+                    <div class="form-group">
+                        <label for="articleTitle">כותרת המאמר</label>
+                        <input type="text" id="articleTitle" class="form-control" placeholder="הזן כותרת למאמר..."
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="articleSummary">תקציר המאמר</label>
+                        <textarea id="articleSummary" class="form-control" rows="3" placeholder="הזן תקציר קצר למאמר..."
+                            required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="articleContent">תוכן המאמר</label>
+                        <textarea id="articleContent" class="form-control" placeholder="הזן את תוכן המאמר המלא..."
+                            required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="articleImage">תמונה ראשית</label>
+                        <input type="file" id="articleImage" class="form-control" accept="image/*">
+                        <div class="image-preview" id="imagePreview">
+                            <img src="/api/placeholder/400/250" alt="תצוגה מקדימה של התמונה" id="previewImg">
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn" id="publishButton">פרסם מאמר</button>
+                        <button type="button" class="btn btn-danger" id="clearButton">נקה טופס</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="articles-list">
+                <h2>מאמרים שפורסמו</h2>
+                <div id="publishedArticles">
+                    <!-- Published articles will be listed here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <p>&copy; 2025 בינה פלוס. כל הזכויות שמורות.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Article management functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            // Elements
+            const articleForm = document.getElementById('articleForm');
+            const titleInput = document.getElementById('articleTitle');
+            const summaryInput = document.getElementById('articleSummary');
+            const contentInput = document.getElementById('articleContent');
+            const imageInput = document.getElementById('articleImage');
+            const previewImg = document.getElementById('previewImg');
+            const publishButton = document.getElementById('publishButton');
+            const clearButton = document.getElementById('clearButton');
+            const successMessage = document.getElementById('successMessage');
+            const publishedArticlesList = document.getElementById('publishedArticles');
+
+            // Current editing state
+            let currentEditId = null;
+
+            // Load articles from localStorage
+            loadArticles();
+
+            // Image preview functionality
+            imageInput.addEventListener('change', function (event) {
+                if (event.target.files && event.target.files[0]) {
+                    const reader = new FileReader();
+
+                    reader.onload = function (e) {
+                        previewImg.src = e.target.result;
+                    };
+
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            });
+
+            // Form validation
+            function validateForm() {
+                return titleInput.value.trim() !== '' &&
+                    summaryInput.value.trim() !== '' &&
+                    contentInput.value.trim() !== '';
+            }
+
+            // Reset form fields
+            function resetForm() {
+                articleForm.reset();
+                previewImg.src = '/api/placeholder/400/250';
+                currentEditId = null;
+            }
+
+            // Publish article
+            publishButton.addEventListener('click', function () {
+                if (!validateForm()) {
+                    alert('נא למלא את כל השדות הנדרשים');
+                    return;
+                }
+
+                // Get current articles
+                let articles = JSON.parse(localStorage.getItem('articles') || '[]');
+
+                // Create new article object
+                const newArticle = {
+                    id: currentEditId || Date.now().toString(),
+                    title: titleInput.value.trim(),
+                    summary: summaryInput.value.trim(),
+                    content: contentInput.value.trim(),
+                    image: previewImg.src,
+                    date: new Date().toISOString()
+                };
+
+                // If editing, remove old version
+                if (currentEditId) {
+                    articles = articles.filter(article => article.id != currentEditId);
+                }
+
+                // Add new article
+                articles.push(newArticle);
+
+                // Save to localStorage
+                localStorage.setItem('articles', JSON.stringify(articles));
+
+                // Show success message
+                successMessage.style.display = 'block';
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+
+                // Reset form
+                resetForm();
+
+                // Reload articles list
+                loadArticles();
+
+                // Update main page
+                updateMainPageArticles();
+            });
+
+            // Clear form
+            clearButton.addEventListener('click', resetForm);
+
+            // Load and display articles
+            function loadArticles() {
+                const articles = JSON.parse(localStorage.getItem('articles') || '[]');
+                publishedArticlesList.innerHTML = '';
+
+                if (articles.length === 0) {
+                    publishedArticlesList.innerHTML = '<p>אין מאמרים שפורסמו עדיין</p>';
+                    return;
+                }
+
+                articles.forEach(article => {
+                    const articleElement = document.createElement('div');
+                    articleElement.className = 'article-item';
+                    articleElement.innerHTML = `
+                        <h3>${article.title}</h3>
+                        <div class="article-actions">
+                            <button class="edit" data-id="${article.id}">ערוך</button>
+                            <button class="delete" data-id="${article.id}">מחק</button>
+                        </div>
+                    `;
+                    publishedArticlesList.appendChild(articleElement);
+                });
+
+                // Add event listeners for edit and delete buttons
+                document.querySelectorAll('.article-actions .edit').forEach(button => {
+                    button.addEventListener('click', function () {
+                        editArticle(this.getAttribute('data-id'));
+                    });
+                });
+
+                document.querySelectorAll('.article-actions .delete').forEach(button => {
+                    button.addEventListener('click', function () {
+                        deleteArticle(this.getAttribute('data-id'));
+                    });
+                });
+            }
+
+            // Edit article
+            function editArticle(id) {
+                const articles = JSON.parse(localStorage.getItem('articles') || '[]');
+                const article = articles.find(article => article.id == id);
+
+                if (article) {
+                    titleInput.value = article.title;
+                    summaryInput.value = article.summary;
+                    contentInput.value = article.content;
+                    previewImg.src = article.image || '/api/placeholder/400/250';
+                    currentEditId = id;
+
+                    // Scroll to form
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+
+            // Delete article
+            function deleteArticle(id, confirmDelete = true) {
+                if (confirmDelete && !confirm('האם אתה בטוח שברצונך למחוק מאמר זה?')) {
+                    return;
+                }
+
+                let articles = JSON.parse(localStorage.getItem('articles') || '[]');
+                articles = articles.filter(article => article.id != id);
+                localStorage.setItem('articles', JSON.stringify(articles));
+                loadArticles();
+                updateMainPageArticles();
+            }
+
+            // Update articles on main page
+            function updateMainPageArticles() {
+                // Since we're using localStorage to store articles,
+                // the main page will be able to access the same data
+                console.log('מאמרים סונכרנו עם דף הבית');
+                // No additional code needed here since localStorage is shared
+            }
+        });
+
+        publishButton.addEventListener('click', function () {
+            if (!validateForm()) {
+                alert('נא למלא את כל השדות הנדרשים');
+                return;
+            }
+
+            // Get current articles
+            let articles = JSON.parse(localStorage.getItem('articles') || '[]');
+
+            // יצירת מזהה ייחודי עבור URL
+            const articleSlug = createSlug(titleInput.value.trim());
+
+            // Create new article object
+            const newArticle = {
+                id: currentEditId || Date.now().toString(),
+                title: titleInput.value.trim(),
+                summary: summaryInput.value.trim(),
+                content: contentInput.value.trim(),
+                image: previewImg.src,
+                date: new Date().toISOString(),
+                slug: articleSlug // שמירת ה-slug לצורך קישור
+            };
+
+            // If editing, remove old version
+            if (currentEditId) {
+                articles = articles.filter(article => article.id != currentEditId);
+            }
+
+            // Add new article
+            articles.push(newArticle);
+
+            // Save to localStorage
+            localStorage.setItem('articles', JSON.stringify(articles));
+
+            // Show success message
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 3000);
+
+            // Reset form
+            resetForm();
+
+            // Reload articles list
+            loadArticles();
+
+            // Update main page
+            updateMainPageArticles();
+        });
+
+        // פונקציה ליצירת slug מכותרת המאמר
+        function createSlug(title) {
+            // המרת טקסט עברי ואנגלי לפורמט URL-friendly
+            return title
+                .trim()
+                .toLowerCase()
+                .replace(/[^\w\s\u0590-\u05FF]/g, '')  // שמירה על אותיות עבריות, אנגליות וספרות
+                .replace(/\s+/g, '-')                   // החלפת רווחים ב-hyphens
+                .replace(/-+/g, '-');                   // מניעת hyphens כפולים
+        }
+
+        // עדכון פונקציית loadArticles כדי להציג קישורים לתצוגה מקדימה
+        function loadArticles() {
+            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
+            publishedArticlesList.innerHTML = '';
+
+            if (articles.length === 0) {
+                publishedArticlesList.innerHTML = '<p>אין מאמרים שפורסמו עדיין</p>';
+                return;
+            }
+
+            articles.forEach(article => {
+                const articleElement = document.createElement('div');
+                articleElement.className = 'article-item';
+                articleElement.innerHTML = `
+            <h3>${article.title}</h3>
+            <div class="article-actions">
+                <a href="article.html?id=${article.slug}" target="_blank" class="btn-preview">צפה</a>
+                <button class="edit" data-id="${article.id}">ערוך</button>
+                <button class="delete" data-id="${article.id}">מחק</button>
+            </div>
+        `;
+                publishedArticlesList.appendChild(articleElement);
+            });
+
+            // הוספת מאזיני אירועים
+            document.querySelectorAll('.article-actions .edit').forEach(button => {
+                button.addEventListener('click', function () {
+                    editArticle(this.getAttribute('data-id'));
+                });
+            });
+
+            document.querySelectorAll('.article-actions .delete').forEach(button => {
+                button.addEventListener('click', function () {
+                    deleteArticle(this.getAttribute('data-id'));
+                });
+            });
+        }
+    </script>
+</body>
+
+</html>
