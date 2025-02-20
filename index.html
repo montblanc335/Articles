@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>בינה פלוס - מאמרים על בינה מלאכותית</title>
+    <style>
+        :root {
+            --primary: #6700EB;
+            --secondary: #00EBCC;
+            --dark: #121212;
+            --light: #f4f4f8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 130px;
+            width: auto;
+        }
+
+        nav {
+            margin-right: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+            }
+
+            .logo {
+                margin-bottom: 10px;
+            }
+
+            nav {
+                margin-right: 0;
+            }
+        }
+
+
+        nav ul {
+            display: flex;
+            justify-content: flex-start;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .hero {
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('/api/placeholder/1200/800') no-repeat center center/cover;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .articles {
+            padding: 5rem 0;
+        }
+
+        .articles h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .article-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .article-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .article-image {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .article-content h3 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+
+        .article-content p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .article-content .read-more {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            position: relative;
+        }
+
+        .article-content .read-more::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            transition: all 0.3s ease;
+        }
+
+        .article-content .read-more:hover::after {
+            right: -25px;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 3rem 0;
+            margin-top: 5rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            min-width: 250px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul li a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section ul li a:hover {
+            color: var(--secondary);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-icons a {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            background-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animation styles */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Glowing effect */
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 5px var(--primary);
+            }
+
+            50% {
+                box-shadow: 0 0 20px var(--primary), 0 0 30px var(--secondary);
+            }
+
+            100% {
+                box-shadow: 0 0 5px var(--primary);
+            }
+        }
+
+        .glow {
+            animation: glow 3s infinite;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 5px 0;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="img/תמונה1.png" alt="בינה פלוס לוגו" width="250">
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">דף הבית</a></li>
+                        <li><a href="#articles">מאמרים</a></li>
+                        <li><a href="#about">אודות</a></li>
+                        <li><a href="#contact">צור קשר</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>גלה את עולם הבינה המלאכותית</h1>
+                <p>ברוכים הבאים לאתר בינה פלוס - מקור המידע המוביל שלך לכל הנוגע לבינה מלאכותית. גלה טכנולוגיות חדשניות,
+                    מחקרים פורצי דרך וכלים שישנו את העתיד שלנו.</p>
+                <a href="#articles" class="btn glow">גלה מאמרים</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="articles" class="articles">
+        <div class="container">
+            <h2>מאמרים אחרונים</h2>
+            <div class="article-grid">
+                <div class="article-card fade-in">
+                    <img src="/api/placeholder/400/250" alt="בינה מלאכותית בחיי היומיום" class="article-image">
+                    <div class="article-content">
+                        <h3>האם כבר שאלת את עצמך, כיצד בינה מלאכותית עובדת?</h3>
+                        <p>האם שאלת את עצמך פעם איך בינה מלאכותית עובדת? אם תרצה תשובה קצרה ופשוטה כנס לפה...</p>
+                        <a href="1.html" class="read-more">קרא עוד</a>
+                    </div>
+                </div>
+                <div class="article-card fade-in">
+                    <img src="/api/placeholder/400/250" alt="עתיד הלמידה העמוקה" class="article-image">
+                    <div class="article-content">
+                        <h3>עתיד הלמידה העמוקה</h3>
+                        <p>סקירה מעמיקה של התפתחויות אחרונות בתחום הלמידה העמוקה והשלכותיהן על תעשיות שונות, מזיהוי
+                            תמונות ועד פיתוח תרופות.</p>
+                        <a href="2.html" class="read-more">קרא עוד</a>
+                    </div>
+                </div>
+                <div class="article-card fade-in">
+                    <img src="/api/placeholder/400/250" alt="אתיקה בעידן הבינה המלאכותית" class="article-image">
+                    <div class="article-content">
+                        <h3>אתיקה בעידן הבינה המלאכותית</h3>
+                        <p>דיון מעמיק בשאלות אתיות הנוגעות לפיתוח ושימוש בבינה מלאכותית, מפרטיות ועד העדפות אלגוריתמיות.
+                        </p>
+                        <a href="3.html" class="read-more">קרא עוד</a>
+                    </div>
+                </div>
+                <div class="article-card fade-in">
+                    <img src="/api/placeholder/400/250" alt="מודלים גנרטיביים וכוחם" class="article-image">
+                    <div class="article-content">
+                        <h3>מודלים גנרטיביים וכוחם</h3>
+                        <p>הצצה לעולם המודלים הגנרטיביים כמו GPT, DALL-E ודומיהם, וכיצד הם משנים את הדרך בה אנו יוצרים
+                            ומתקשרים.</p>
+                        <a href="4.html" class="read-more">קרא עוד</a>
+                    </div>
+                </div>
+                <div class="article-card fade-in">
+                    <img src="/api/placeholder/400/250" alt="בינה מלאכותית בעסקים" class="article-image">
+                    <div class="article-content">
+                        <h3>בינה מלאכותית בעסקים</h3>
+                        <p>כיצד חברות מובילות משלבות בינה מלאכותית בתהליכים עסקיים ומשיגות יתרון תחרותי בשוק התחרותי של
+                            היום.</p>
+                        <a href="5.html" class="read-more">קרא עוד</a>
+                    </div>
+                </div>
+                <div class="article-card fade-in">
+                    <img src="/api/placeholder/400/250" alt="בינה מלאכותית ורפואה" class="article-image">
+                    <div class="article-content">
+                        <h3>בינה מלאכותית ורפואה</h3>
+                        <p>סקירה על התקדמויות מדהימות בשילוב בינה מלאכותית בתחום הרפואה, מאבחון מוקדם ועד פיתוח תרופות
+                            מותאמות אישית.</p>
+                        <a href="6.html" class="read-more">קרא עוד</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div id="about">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>על האתר</h3>
+                        <p>בינה פלוס הוא אתר מוביל למאמרים ומידע בנושא בינה מלאכותית, המציע תוכן מעמיק ועדכני לחובבים
+                            ומקצוענים כאחד.</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>קישורים מהירים</h3>
+                    <ul>
+                        <li><a href="#home">דף הבית</a></li>
+                        <li><a href="#articles">מאמרים</a></li>
+                        <li><a href="#about">אודות</a></li>
+                        <li><a href="#contact">צור קשר</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <div id="contact">
+                        <h3>צור קשר</h3>
+                        דואל:
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 בינה פלוס. כל הזכויות שמורות.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                } else {
+                    entry.target.classList.remove('visible');
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load articles from localStorage
+            loadArticlesFromStorage();
+
+            function loadArticlesFromStorage() {
+                const storedArticles = JSON.parse(localStorage.getItem('articles') || '[]');
+                const articleGrid = document.querySelector('.article-grid');
+
+                // If we have stored articles, display them first
+                if (storedArticles.length > 0) {
+                    // Loop through stored articles and add them to the grid
+                    storedArticles.forEach(article => {
+                        const articleCard = document.createElement('div');
+                        articleCard.className = 'article-card fade-in';
+
+                        articleCard.innerHTML = `
+                    <img src="${article.image}" alt="${article.title}" class="article-image">
+                    <div class="article-content">
+                        <h3>${article.title}</h3>
+                        <p>${article.summary}</p>
+                        <a href="javascript:void(0)" onclick="viewArticle(${article.id})" class="read-more">קרא עוד</a>
+                    </div>
+                `;
+
+                        // Insert new article at the beginning of the grid
+                        if (articleGrid.firstChild) {
+                            articleGrid.insertBefore(articleCard, articleGrid.firstChild);
+                        } else {
+                            articleGrid.appendChild(articleCard);
+                        }
+
+                        // Apply fade-in animation after a short delay
+                        setTimeout(() => {
+                            articleCard.classList.add('visible');
+                        }, 100);
+                    });
+                }
+            }
+        });
+
+        // Add this function outside the DOMContentLoaded event
+        function viewArticle(id) {
+            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
+            const article = articles.find(article => article.id == id);
+
+            if (article) {
+                // Here you would normally redirect to an article page
+                // For demonstration, we'll open an alert with article content
+                alert(`${article.title}\n\n${article.content}`);
+
+                // In a real implementation, you would do something like:
+                // window.location.href = `article.html?id=${id}`;
+                // And then have article.html load the content from localStorage
+            }
+        }
+
+        function loadArticlesForHomepage() {
+            const articlesSection = document.getElementById('articles-container');
+            if (!articlesSection) return;
+
+            const articles = JSON.parse(localStorage.getItem('articles') || '[]');
+
+            if (articles.length === 0) {
+                articlesSection.innerHTML = '<p class="no-articles">אין מאמרים להצגה כרגע. בקרוב יתווספו מאמרים חדשים!</p>';
+                return;
+            }
+
+            // מיון המאמרים מהחדש לישן
+            articles.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            let articlesHTML = '';
+
+            articles.forEach(article => {
+                // טיפול במקרה שאין slug
+                const articleSlug = article.slug || createSlugFromTitle(article.title);
+
+                articlesHTML += `
+            <div class="article-card">
+                <div class="article-image">
+                    <img src="${article.image || '/api/placeholder/400/250'}" alt="${article.title}">
+                </div>
+                <div class="article-content">
+                    <h3>${article.title}</h3>
+                    <p>${article.summary}</p>
+                    <a href="article.html?id=${articleSlug}" class="btn-read-more">קרא עוד</a>
+                </div>
+            </div>
+        `;
+            });
+
+            articlesSection.innerHTML = articlesHTML;
+        }
+
+        // פונקציה ליצירת slug במקרה שאין (לתאימות עם מאמרים ישנים)
+        function createSlugFromTitle(title) {
+            return title
+                .trim()
+                .toLowerCase()
+                .replace(/[^\w\s\u0590-\u05FF]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+        }
+
+        // טעינת המאמרים בטעינת הדף
+        document.addEventListener('DOMContentLoaded', loadArticlesForHomepage);
+
+    </script>
+</body>
+
+</html>
